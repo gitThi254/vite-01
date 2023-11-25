@@ -5,6 +5,8 @@ import BtnLogout from "./BtnLogout";
 
 const Navbar = () => {
   const { data: user } = useVerify();
+  console.log(user);
+
   return (
     <nav className='p-5 flex container mx-auto justify-between bg-violet-500 items-center rounded-md shadow-md'>
       <div>

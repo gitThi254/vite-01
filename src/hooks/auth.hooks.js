@@ -35,7 +35,8 @@ export const useLogout = () => {
   return useMutation({
     mutationFn: logoutReq,
     onSuccess: () => {
-      queryClient.setQueryData([QUERY_KEY.user], null);
+      queryClient.setQueriesData([QUERY_KEY.user], null);
+      queryClient.setQueriesData([QUERY_KEY.tasks], null);
       navigate("/login");
     },
   });
@@ -43,13 +44,14 @@ export const useLogout = () => {
 
 export const useVerify = () => {
   const queryClient = useQueryClient();
-  const base =
-    JSON.parse(localStorage.getItem("REACT_QUERY_OFFLINE_CACHE")).clientState
-      ?.queries[0]?.state?.data ?? undefined;
+  const base = queryClient.setQueryData([QUERY_KEY.user]) ?? null;
   const user = useQuery({
     queryKey: [QUERY_KEY.user],
     queryFn: verifyReq,
-    initialData: base,
+    refetchIntervalInBackground: false,
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+    initialData: base ?? null,
     throwOnError: (err) => {
       console.log(err);
     },
